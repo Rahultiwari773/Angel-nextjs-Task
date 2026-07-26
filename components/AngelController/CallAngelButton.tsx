@@ -55,7 +55,7 @@ export const CallAngelButton: React.FC = () => {
         <button
           onClick={handleClick}
           disabled={stage === "calling"}
-          className={`relative px-10 py-5 rounded-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 border-2 border-amber-200/90 shadow-[0_0_40px_rgba(255,215,0,0.8)] text-slate-950 font-bold text-xl md:text-2xl tracking-wider flex items-center space-x-3 transition-all duration-300 transform hover:scale-105 active:scale-95 group overflow-hidden ${
+          className={`relative px-6 py-3.5 sm:px-10 sm:py-5 rounded-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 border-2 border-amber-200/90 shadow-[0_0_40px_rgba(255,215,0,0.8)] text-slate-950 font-bold text-base sm:text-xl md:text-2xl tracking-wider flex items-center space-x-2 sm:space-x-3 transition-all duration-300 transform hover:scale-105 active:scale-95 group overflow-hidden ${
             stage === "calling" ? "opacity-70 cursor-not-allowed" : ""
           }`}
         >

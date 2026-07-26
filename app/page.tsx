@@ -15,7 +15,7 @@ import { SettingsDrawer } from "../components/Settings/SettingsDrawer";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen w-full overflow-hidden flex flex-col justify-between items-center py-6">
+    <main className="relative min-h-screen w-full overflow-x-hidden flex flex-col justify-between items-center py-2 sm:py-4">
       {/* Loading Screen */}
       <HeavenLoading />
 
@@ -30,12 +30,12 @@ export default function Home() {
       <HeartParticles />
 
       {/* Central Interactive Content Area */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen w-full pt-20 pb-36 px-4">
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-[calc(100vh-100px)] w-full pt-16 sm:pt-20 pb-32 sm:pb-36 px-2 sm:px-4 max-w-5xl mx-auto">
         {/* Entry Sequence & Angel Visual */}
         <EntrySequenceManager />
 
         {/* Center Call Angel Button */}
-        <div className="mt-4 md:mt-6">
+        <div className="mt-3 sm:mt-6">
           <CallAngelButton />
         </div>
       </div>

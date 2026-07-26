@@ -25,7 +25,7 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
   const activeRose = appliedRoses.length > 0 ? appliedRoses[0] : null;
 
   return (
-    <div className="relative flex flex-col items-center justify-center select-none pointer-events-auto group">
+    <div className="relative flex flex-col items-center justify-center select-none pointer-events-auto group scale-75 sm:scale-90 md:scale-100 origin-center transition-transform duration-300">
 
       {/* Dynamic Golden Celestial Halo */}
       <motion.div

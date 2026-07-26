@@ -88,7 +88,7 @@ export const EntrySequenceManager: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.8 }}
             transition={{ type: "spring", stiffness: 350, damping: 22 }}
-            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-8 py-4 rounded-3xl bg-gradient-to-r from-slate-950 via-amber-950 to-slate-950 border-2 border-amber-300 shadow-[0_0_60px_rgba(255,215,0,0.95)] backdrop-blur-2xl text-amber-100 font-extrabold text-base md:text-xl tracking-wide flex items-center space-x-3 max-w-[90vw] text-center"
+            className="fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 sm:px-8 sm:py-4 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-slate-950 via-amber-950 to-slate-950 border-2 border-amber-300 shadow-[0_0_60px_rgba(255,215,0,0.95)] backdrop-blur-2xl text-amber-100 font-extrabold text-xs sm:text-base md:text-xl tracking-wide flex items-center space-x-2 sm:space-x-3 max-w-[92vw] text-center"
           >
             <span className="text-2xl animate-bounce">✨</span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
