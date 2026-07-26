@@ -16,7 +16,7 @@ import { EntryStyleModal } from "../components/AngelController/EntryStyleModal";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen w-full overflow-y-auto md:h-screen md:overflow-hidden flex flex-col justify-between items-center select-none scrollbar-thin scrollbar-thumb-amber-400/30">
+    <main className="relative min-h-screen h-full w-full overflow-y-auto flex flex-col justify-between items-center select-none scrollbar-thin scrollbar-thumb-amber-400/60 scrollbar-track-slate-950">
       {/* Loading Screen */}
       <HeavenLoading />
 
@@ -30,13 +30,13 @@ export default function Home() {
       <FireworksCanvas />
       <HeartParticles />
 
-      {/* Central Interactive Content Area (Auto-Scrollable on Mini/Small Devices, Viewport-Fit on Desktop) */}
-      <div className="relative z-20 flex-1 w-full max-w-5xl mx-auto flex flex-col items-center justify-center pt-14 sm:pt-16 pb-32 md:pb-24 px-2 my-auto">
+      {/* Central Interactive Content Area (Scrollable whenever window height is small) */}
+      <div className="relative z-20 flex-1 w-full max-w-5xl mx-auto flex flex-col items-center justify-center pt-16 sm:pt-20 pb-44 sm:pb-48 px-2 my-auto">
         {/* Entry Sequence & Angel Visual */}
         <EntrySequenceManager />
 
         {/* Center Call Angel Button & Active Style Badge */}
-        <div className="mt-2 sm:mt-3 w-full flex justify-center shrink-0">
+        <div className="mt-3 sm:mt-4 w-full flex justify-center shrink-0">
           <CallAngelButton />
         </div>
       </div>
