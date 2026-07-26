@@ -1,4 +1,4 @@
-export type EntryType = 1 | 2 | 3 | 4;
+export type EntryType = 1 | 2 | 3 | 4 | 5 | 6;
 
 export type AngelStage = 
   | "dark_intro"
@@ -7,6 +7,16 @@ export type AngelStage =
   | "entering"
   | "present"
   | "reacting";
+
+export interface EntryStyleInfo {
+  type: EntryType;
+  name: string;
+  shortName: string;
+  icon: string;
+  description: string;
+  greeting: string;
+  themeColor: string;
+}
 
 export interface RoseItem {
   id: string;
@@ -60,3 +70,4 @@ export interface SystemLog {
   details: string;
   type: "info" | "rose" | "entry" | "setting";
 }
+

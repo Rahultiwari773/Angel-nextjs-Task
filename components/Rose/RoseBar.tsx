@@ -66,33 +66,33 @@ export const RoseBar: React.FC = () => {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        className="fixed bottom-3 inset-x-0 mx-auto z-40 max-w-4xl w-[92vw] px-4 py-2.5 rounded-3xl bg-slate-950/90 border-2 border-amber-300/60 shadow-[0_0_50px_rgba(255,215,0,0.5)] backdrop-blur-2xl flex flex-col items-center space-y-2"
+        className="fixed bottom-2 sm:bottom-3 inset-x-0 mx-auto z-40 max-w-4xl w-[94vw] sm:w-[90vw] px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl sm:rounded-3xl bg-slate-950/90 border-2 border-amber-300/60 shadow-[0_0_40px_rgba(255,215,0,0.4)] backdrop-blur-2xl flex flex-col items-center space-y-1 sm:space-y-1.5"
       >
-        <div className="flex items-center justify-between w-full px-2">
-          <div className="flex items-center space-x-2 text-amber-200 text-xs md:text-sm font-semibold">
+        <div className="flex items-center justify-between w-full px-1 sm:px-2">
+          <div className="flex items-center space-x-1.5 text-amber-200 text-xs sm:text-sm font-semibold">
             <span>🌹</span>
-            <span>Offer Celestial Roses to Angel</span>
+            <span className="text-[11px] sm:text-xs">Offer Celestial Roses</span>
             {appliedRoses.length > 0 && (
-              <span className="hidden sm:inline-block ml-2 px-2.5 py-0.5 rounded-full text-[10px] bg-amber-400/20 border border-amber-300/50 text-amber-200 font-bold animate-pulse" style={{ color: appliedRoses[0].color }}>
-                ✨ Active: {appliedRoses[0].name} {appliedRoses[0].iconSymbol}
+              <span className="hidden sm:inline-block ml-1.5 px-2 py-0.5 rounded-full text-[10px] bg-amber-400/20 border border-amber-300/50 text-amber-200 font-bold animate-pulse" style={{ color: appliedRoses[0].color }}>
+                ✨ {appliedRoses[0].name} {appliedRoses[0].iconSymbol}
               </span>
             )}
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1.5">
             {appliedRoses.length > 0 && (
               <button
                 onClick={clearAppliedRoses}
-                className="px-2.5 py-1 text-xs rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 font-medium transition-colors"
+                className="px-2 py-0.5 text-[10px] sm:text-xs rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 font-medium transition-colors"
                 title="Remove applied roses from Angel"
               >
-                Clear Roses
+                Clear
               </button>
             )}
 
             <button
               onClick={handleLaunchBurst}
-              className="px-3 py-1 text-xs rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 font-bold hover:scale-105 transition-transform shadow-md"
+              className="px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 font-bold hover:scale-105 transition-transform shadow-md"
             >
               Launch All 🌹✨
             </button>
@@ -100,40 +100,40 @@ export const RoseBar: React.FC = () => {
         </div>
 
         {/* 10 Roses Interactive Carousel / Row */}
-        <div className="flex items-center justify-start md:justify-center space-x-2 md:space-x-3 overflow-x-auto w-full py-1.5 scrollbar-none px-1">
+        <div className="flex items-center justify-start md:justify-center space-x-1.5 md:space-x-2.5 overflow-x-auto w-full py-0.5 scrollbar-none px-0.5">
           {ROSES_CATALOG.map((rose) => {
             const isApplied = appliedRoses.some((r) => r.id === rose.id);
             return (
               <motion.button
                 key={rose.id}
-                whileHover={{ scale: 1.15, y: -5 }}
+                whileHover={{ scale: 1.12, y: -3 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={(e) => handleRoseClick(rose, e)}
-                className={`relative flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 group min-w-[56px] ${
+                className={`relative flex flex-col items-center justify-center p-1 sm:p-1.5 rounded-xl transition-all duration-300 group min-w-[48px] sm:min-w-[52px] ${
                   isApplied
-                    ? "bg-amber-950/50 border-2 border-amber-400 shadow-[0_0_20px_rgba(255,215,0,0.6)] ring-1 ring-amber-300"
+                    ? "bg-amber-950/60 border border-amber-400 shadow-[0_0_15px_rgba(255,215,0,0.5)] ring-1 ring-amber-300"
                     : "bg-slate-900/80 border border-slate-700/60 hover:border-amber-300"
                 }`}
                 title={`${rose.name} - ${rose.description}${isApplied ? " (Currently Applied on Angel)" : ""}`}
               >
                 {/* Active Applied Badge */}
                 {isApplied && (
-                  <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] flex items-center justify-center shadow-md animate-bounce">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] flex items-center justify-center shadow-md animate-bounce">
                     ✓
                   </span>
                 )}
 
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-lg shadow-lg transition-transform group-hover:scale-110"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm sm:text-base shadow-lg transition-transform group-hover:scale-110"
                   style={{
                     backgroundColor: "rgba(15, 23, 42, 0.9)",
-                    boxShadow: `0 0 15px ${isApplied ? rose.glowColor : "transparent"}`,
+                    boxShadow: `0 0 12px ${isApplied ? rose.glowColor : "transparent"}`,
                   }}
                 >
                   <span>{rose.iconSymbol}</span>
                 </div>
                 <span
-                  className={`text-[10px] font-medium mt-1 truncate max-w-[60px] ${
+                  className={`text-[9px] sm:text-[10px] font-medium mt-0.5 truncate max-w-[52px] ${
                     isApplied ? "text-amber-200 font-bold" : "text-slate-300"
                   }`}
                 >

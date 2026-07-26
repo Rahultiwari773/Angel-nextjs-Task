@@ -2,12 +2,14 @@ const Angel = require("../models/Angel");
 
 exports.callAngel = async (req, res) => {
   try {
-    const entryType = req.body.entryType || Math.floor(Math.random() * 4) + 1;
+    const entryType = req.body.entryType || Math.floor(Math.random() * 6) + 1;
     const entryNames = {
-      1: "Heavenly Descent",
-      2: "Ethereal Portal",
-      3: "Orbital Flight",
-      4: "Constellation Genesis",
+      1: "Heavenly Light Descent",
+      2: "Mystic Portal Vortex",
+      3: "Celestial Orbital Flight",
+      4: "Starlight Supernova Genesis",
+      5: "Golden Phoenix Rise",
+      6: "Diamond Butterfly Tempest",
     };
 
     return res.json({
@@ -32,6 +34,8 @@ exports.getAngelsList = async (req, res) => {
       { id: 2, name: "Mystic Archangel", entryType: 2, active: true },
       { id: 3, name: "Rose Guardian", entryType: 3, active: true },
       { id: 4, name: "Starlight Spirit", entryType: 4, active: true },
+      { id: 5, name: "Golden Phoenix", entryType: 5, active: true },
+      { id: 6, name: "Crystal Butterfly", entryType: 6, active: true },
     ];
     return res.json({ success: true, angels });
   } catch (err) {
@@ -40,6 +44,6 @@ exports.getAngelsList = async (req, res) => {
 };
 
 exports.getRandomAngel = async (req, res) => {
-  const randomType = Math.floor(Math.random() * 4) + 1;
+  const randomType = Math.floor(Math.random() * 6) + 1;
   return res.json({ success: true, angelType: randomType });
 };

@@ -12,10 +12,11 @@ import { EntrySequenceManager } from "../components/AngelEntry/EntrySequenceMana
 import { CallAngelButton } from "../components/AngelController/CallAngelButton";
 import { RoseBar } from "../components/Rose/RoseBar";
 import { SettingsDrawer } from "../components/Settings/SettingsDrawer";
+import { EntryStyleModal } from "../components/AngelController/EntryStyleModal";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen w-full overflow-x-hidden flex flex-col justify-between items-center py-2 sm:py-4">
+    <main className="relative min-h-screen sm:h-screen sm:h-[100dvh] w-full overflow-y-auto sm:overflow-hidden flex flex-col justify-between items-center select-none">
       {/* Loading Screen */}
       <HeavenLoading />
 
@@ -29,16 +30,19 @@ export default function Home() {
       <FireworksCanvas />
       <HeartParticles />
 
-      {/* Central Interactive Content Area */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-[calc(100vh-100px)] w-full pt-16 sm:pt-20 pb-32 sm:pb-36 px-2 sm:px-4 max-w-5xl mx-auto">
+      {/* Central Interactive Content Area (Fits 100% Single Screen Viewport) */}
+      <div className="relative z-20 flex-1 w-full max-w-5xl mx-auto flex flex-col items-center justify-center pt-12 sm:pt-14 pb-20 sm:pb-24 px-2 overflow-visible my-auto">
         {/* Entry Sequence & Angel Visual */}
         <EntrySequenceManager />
 
-        {/* Center Call Angel Button */}
-        <div className="mt-3 sm:mt-6">
+        {/* Center Call Angel Button & Active Style Badge */}
+        <div className="mt-1 sm:mt-1.5 w-full flex justify-center shrink-0">
           <CallAngelButton />
         </div>
       </div>
+
+      {/* Entry Style Selector Modal Dialog */}
+      <EntryStyleModal />
 
       {/* Bottom Fixed Rose Bar */}
       <RoseBar />

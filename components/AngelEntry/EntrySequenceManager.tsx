@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAngelStore } from "../../store/useAngelStore";
 import { AngelAvatar } from "../Angel/AngelAvatar";
 import { soundEngine } from "../../lib/soundEngine";
+import { getEntryStyleInfo } from "../../lib/entryStyles";
 
 export const EntrySequenceManager: React.FC = () => {
   const { stage, activeEntryType, setStage, settings, reactionMessage, setAngelPos } = useAngelStore();
@@ -38,11 +39,29 @@ export const EntrySequenceManager: React.FC = () => {
     if (stage === "calling") {
       setSequenceStep(1);
 
-      // Play introductory portal/bell/wing sounds
-      if (activeEntryType === 2) {
-        soundEngine.playPortalSound(settings.volume, settings.sfxEnabled);
-      } else {
-        soundEngine.playBell(settings.volume, settings.sfxEnabled);
+      // Play sound effect per entry style
+      switch (activeEntryType) {
+        case 1:
+          soundEngine.playBell(settings.volume, settings.sfxEnabled);
+          break;
+        case 2:
+          soundEngine.playPortalSound(settings.volume, settings.sfxEnabled);
+          break;
+        case 3:
+          soundEngine.playWingFlap(settings.volume, settings.sfxEnabled);
+          soundEngine.playBell(settings.volume, settings.sfxEnabled);
+          break;
+        case 4:
+          soundEngine.playCrackersPop(settings.volume, settings.sfxEnabled);
+          break;
+        case 5:
+          soundEngine.playPhoenixRise(settings.volume, settings.sfxEnabled);
+          break;
+        case 6:
+          soundEngine.playButterflySwarm(settings.volume, settings.sfxEnabled);
+          break;
+        default:
+          soundEngine.playBell(settings.volume, settings.sfxEnabled);
       }
 
       // Step transitions
@@ -56,13 +75,8 @@ export const EntrySequenceManager: React.FC = () => {
         soundEngine.playLandingSound(settings.volume, settings.sfxEnabled);
         setStage("present");
 
-        const entryGreetings: Record<number, string> = {
-          1: "I have descended from the heavens for you! ✨",
-          2: "Stepping through the portal to your heart! 💖",
-          3: "Orbital celestial grace, just for you! 🌹",
-          4: "Born from the starlight of your love! ⭐",
-        };
-        useAngelStore.getState().setReactionMessage(entryGreetings[activeEntryType] || "Welcome to Heaven! ✨");
+        const styleInfo = getEntryStyleInfo(activeEntryType);
+        useAngelStore.getState().setReactionMessage(styleInfo.greeting);
 
         setTimeout(() => {
           useAngelStore.getState().setReactionMessage(null);
@@ -79,7 +93,7 @@ export const EntrySequenceManager: React.FC = () => {
   if (stage === "dark_intro") return null;
 
   return (
-    <div ref={angelRef} className="relative flex flex-col items-center justify-center my-4">
+    <div ref={angelRef} className="relative flex flex-col items-center justify-center my-1 sm:my-2">
       {/* Prominent Fixed Top Reaction Toast / Angel Dialogue Whisper */}
       <AnimatePresence>
         {reactionMessage && (
@@ -88,16 +102,16 @@ export const EntrySequenceManager: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.8 }}
             transition={{ type: "spring", stiffness: 350, damping: 22 }}
-            className="fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 sm:px-8 sm:py-4 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-slate-950 via-amber-950 to-slate-950 border-2 border-amber-300 shadow-[0_0_60px_rgba(255,215,0,0.95)] backdrop-blur-2xl text-amber-100 font-extrabold text-xs sm:text-base md:text-xl tracking-wide flex items-center space-x-2 sm:space-x-3 max-w-[92vw] text-center"
+            className="fixed top-14 sm:top-16 left-1/2 -translate-x-1/2 z-50 px-4 py-2 sm:px-6 sm:py-3 rounded-2xl bg-gradient-to-r from-slate-950 via-amber-950 to-slate-950 border-2 border-amber-300 shadow-[0_0_50px_rgba(255,215,0,0.9)] backdrop-blur-2xl text-amber-100 font-extrabold text-xs sm:text-base md:text-lg tracking-wide flex items-center space-x-2 sm:space-x-3 max-w-[90vw] text-center"
           >
-            <span className="text-2xl animate-bounce">✨</span>
+            <span className="text-xl sm:text-2xl animate-bounce">✨</span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
               {reactionMessage}
             </span>
-            <span className="text-2xl animate-bounce">❤️</span>
+            <span className="text-xl sm:text-2xl animate-bounce">❤️</span>
 
             {/* Pointer indicator */}
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[12px] border-t-amber-300" />
+            <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-amber-300" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -116,10 +130,10 @@ export const EntrySequenceManager: React.FC = () => {
         </motion.div>
       )}
 
-      {/* Calling Entry Type Animations - Highly Visual & Cinematic */}
+      {/* Calling Entry Type Animations - 6 Distinct Visual Sequences */}
       {stage === "calling" && (
-        <div className="relative flex items-center justify-center min-h-[320px]">
-          {/* Entry Type 1: Heavenly Descent */}
+        <div className="relative flex items-center justify-center min-h-[220px] sm:min-h-[260px]">
+          {/* Entry Type 1: Heavenly Light Descent */}
           {activeEntryType === 1 && (
             <div className="relative flex flex-col items-center">
               {/* Heavenly Light Beam Stream */}
@@ -158,7 +172,7 @@ export const EntrySequenceManager: React.FC = () => {
             </div>
           )}
 
-          {/* Entry Type 2: Ethereal Purple Portal */}
+          {/* Entry Type 2: Mystic Portal Vortex */}
           {activeEntryType === 2 && (
             <div className="relative flex items-center justify-center">
               {/* Dual Swirling Outer & Inner Magic Portal Rings */}
@@ -189,7 +203,7 @@ export const EntrySequenceManager: React.FC = () => {
             </div>
           )}
 
-          {/* Entry Type 3: Orbital Celestial Flight */}
+          {/* Entry Type 3: Celestial Orbital Flight */}
           {activeEntryType === 3 && (
             <div className="relative flex items-center justify-center">
               {/* Ribbon Trail Glow */}
@@ -216,7 +230,7 @@ export const EntrySequenceManager: React.FC = () => {
             </div>
           )}
 
-          {/* Entry Type 4: Constellation Genesis (Supernova Shockwave) */}
+          {/* Entry Type 4: Starlight Supernova Genesis */}
           {activeEntryType === 4 && (
             <motion.div
               animate={sequenceStep === 1 ? { x: [-12, 12, -8, 8, 0], y: [-6, 6, -4, 4, 0] } : {}}
@@ -254,8 +268,92 @@ export const EntrySequenceManager: React.FC = () => {
               </motion.div>
             </motion.div>
           )}
+
+          {/* Entry Type 5: Golden Phoenix Rise */}
+          {activeEntryType === 5 && (
+            <div className="relative flex flex-col items-center justify-center">
+              {/* Divine Golden Flame Radiance */}
+              <motion.div
+                initial={{ scaleY: 0, opacity: 0 }}
+                animate={{ scaleY: [0, 1.3, 1], opacity: [0, 0.9, 0.4] }}
+                transition={{ duration: 1.8 }}
+                className="absolute bottom-0 w-80 h-96 rounded-full bg-gradient-to-t from-amber-500 via-orange-400/50 to-transparent blur-xl pointer-events-none -z-10"
+              />
+
+              {/* Flame Wing Shapes */}
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: [0, 1.5, 1], opacity: [0, 1, 0.7] }}
+                transition={{ duration: 2.0 }}
+                className="absolute w-96 h-48 rounded-full bg-gradient-to-r from-red-500/30 via-amber-300/60 to-yellow-400/30 blur-md pointer-events-none -z-10"
+              />
+
+              <motion.div
+                initial={{ y: 350, opacity: 0, scale: 0.5 }}
+                animate={{
+                  y: sequenceStep >= 2 ? 0 : 120,
+                  opacity: sequenceStep >= 1 ? 1 : 0,
+                  scale: sequenceStep >= 2 ? 1 : 0.75,
+                }}
+                transition={{
+                  duration: 2.5 / settings.animationSpeed,
+                  ease: "easeOut",
+                }}
+              >
+                <AngelAvatar isSmiling={false} isWaving={false} />
+              </motion.div>
+            </div>
+          )}
+
+          {/* Entry Type 6: Diamond Butterfly Tempest */}
+          {activeEntryType === 6 && (
+            <div className="relative flex items-center justify-center">
+              {/* Swarm of Fluttering Crystal Butterflies */}
+              {[...Array(12)].map((_, i) => {
+                const angle = (i / 12) * Math.PI * 2;
+                const radius = 140;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ x: x * 2, y: y * 2, opacity: 0, scale: 0 }}
+                    animate={{
+                      x: sequenceStep >= 2 ? [x, 0] : [x * 1.5, x],
+                      y: sequenceStep >= 2 ? [y, 0] : [y * 1.5, y],
+                      rotate: [0, 360],
+                      opacity: sequenceStep >= 2 ? [1, 0] : [0, 1, 0.8],
+                      scale: sequenceStep >= 2 ? [1.2, 0] : [0.5, 1],
+                    }}
+                    transition={{
+                      duration: 2.4 / settings.animationSpeed,
+                      delay: i * 0.08,
+                      ease: "easeInOut",
+                    }}
+                    className="absolute text-3xl pointer-events-none z-20 drop-shadow-[0_0_12px_rgba(236,72,153,0.9)]"
+                  >
+                    🦋
+                  </motion.div>
+                );
+              })}
+
+              {/* Sparkle Burst Aura */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.2 }}
+                animate={{
+                  opacity: sequenceStep >= 2 ? 1 : 0.4,
+                  scale: sequenceStep >= 2 ? 1 : 0.6,
+                }}
+                transition={{ duration: 1.8 / settings.animationSpeed }}
+              >
+                <AngelAvatar isSmiling={false} isWaving={false} />
+              </motion.div>
+            </div>
+          )}
         </div>
       )}
     </div>
   );
 };
+

@@ -11,20 +11,24 @@ import {
 interface AngelStoreState {
   stage: AngelStage;
   activeEntryType: EntryType;
+  selectedEntryType: EntryType | "random";
   angelPos: { x: number; y: number };
   flyingRoses: ActiveFlyingRose[];
   appliedRoses: RoseItem[];
   settings: AppSettings;
   logs: SystemLog[];
   isSettingsOpen: boolean;
+  isStyleModalOpen: boolean;
   fireworksTrigger: number; // Increment to burst fireworks
   reactionMessage: string | null;
 
   // Actions
   setStage: (stage: AngelStage) => void;
   setEntryType: (entryType: EntryType) => void;
+  setSelectedEntryType: (mode: EntryType | "random") => void;
+  toggleStyleModal: (open?: boolean) => void;
   setAngelPos: (pos: { x: number; y: number }) => void;
-  callAngel: () => Promise<EntryType>;
+  callAngel: (overrideType?: EntryType) => Promise<EntryType>;
   launchRose: (rose: RoseItem | string, startX: number, startY: number) => void;
   applyRoseToAngel: (rose: RoseItem) => void;
   removeAppliedRose: (id: string) => void;
@@ -44,6 +48,7 @@ interface AngelStoreState {
 export const useAngelStore = create<AngelStoreState>((set, get) => ({
   stage: "present",
   activeEntryType: 1,
+  selectedEntryType: "random",
   angelPos: { x: typeof window !== "undefined" ? window.innerWidth / 2 : 600, y: typeof window !== "undefined" ? window.innerHeight / 2 - 40 : 350 },
   flyingRoses: [],
   appliedRoses: [],
@@ -62,28 +67,44 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
       id: "log-1",
       timestamp: new Date().toLocaleTimeString(),
       action: "System Initialized",
-      details: "Angel Entry Experience environment active",
+      details: "Angel Entry Experience environment active with 6 entry styles",
       type: "info",
     },
   ],
   isSettingsOpen: false,
+  isStyleModalOpen: false,
   fireworksTrigger: 0,
   reactionMessage: null,
 
   setStage: (stage) => set({ stage }),
   setEntryType: (activeEntryType) => set({ activeEntryType }),
+  setSelectedEntryType: (selectedEntryType) => set({ selectedEntryType }),
+  toggleStyleModal: (open) =>
+    set((state) => ({
+      isStyleModalOpen: open !== undefined ? open : !state.isStyleModalOpen,
+    })),
   setAngelPos: (angelPos) => set({ angelPos }),
 
-  callAngel: async () => {
-    // Pick random entry type 1..4
-    const nextEntry = (Math.floor(Math.random() * 4) + 1) as EntryType;
+  callAngel: async (overrideType?: EntryType) => {
+    let nextEntry: EntryType;
+    const { selectedEntryType, activeEntryType } = get();
+
+    if (overrideType) {
+      nextEntry = overrideType;
+    } else if (selectedEntryType !== "random") {
+      nextEntry = selectedEntryType;
+    } else {
+      // Auto-cycle through the 6 entry ways on each button press!
+      nextEntry = ((activeEntryType % 6) + 1) as EntryType;
+    }
+
     set({
       stage: "calling",
       activeEntryType: nextEntry,
       fireworksTrigger: get().fireworksTrigger + 1,
     });
 
-    get().addLog("Call Angel Triggered", `Initiating entry sequence Type ${nextEntry}`, "entry");
+    get().addLog("Call Angel Triggered", `Initiating entry sequence Style ${nextEntry}`, "entry");
 
     // Call backend API in background
     try {

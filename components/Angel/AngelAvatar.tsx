@@ -39,7 +39,7 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
           opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" },
           rotate: { duration: 25, repeat: Infinity, ease: "linear" },
         }}
-        className="absolute -top-12 w-32 h-10 rounded-[100%] border-[4px] border-amber-300 shadow-[0_0_35px_rgba(255,215,0,0.9)] bg-gradient-to-r from-amber-200/40 via-yellow-400/20 to-amber-200/40 blur-[1px]"
+        className="absolute -top-6 w-24 h-7 rounded-[100%] border-[3px] border-amber-300 shadow-[0_0_25px_rgba(255,215,0,0.9)] bg-gradient-to-r from-amber-200/40 via-yellow-400/20 to-amber-200/40 blur-[0.5px]"
       />
 
       {/* Main Container with Wings */}
@@ -55,7 +55,7 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute -left-36 -top-10 origin-right w-44 h-64 pointer-events-none drop-shadow-[0_0_25px_rgba(255,215,0,0.7)]"
+          className="absolute -left-24 -top-6 origin-right w-28 h-40 sm:w-32 sm:h-44 pointer-events-none drop-shadow-[0_0_20px_rgba(255,215,0,0.7)]"
         >
           <svg viewBox="0 0 200 300" className="w-full h-full">
             <defs>
@@ -65,7 +65,6 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
                 <stop offset="100%" stopColor="#FFD700" />
               </linearGradient>
             </defs>
-            {/* Feathers layers */}
             <path
               d="M190,150 C140,50 60,20 10,60 C-10,120 40,180 120,220 C160,240 185,200 190,150 Z"
               fill="url(#wingGradLeft)"
@@ -95,7 +94,7 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute -right-36 -top-10 origin-left w-44 h-64 pointer-events-none drop-shadow-[0_0_25px_rgba(255,215,0,0.7)]"
+          className="absolute -right-24 -top-6 origin-left w-28 h-40 sm:w-32 sm:h-44 pointer-events-none drop-shadow-[0_0_20px_rgba(255,215,0,0.7)]"
         >
           <svg viewBox="0 0 200 300" className="w-full h-full">
             <defs>
@@ -126,7 +125,7 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
         {/* Angel Body & Head Vector Visual */}
         <motion.div
           animate={{
-            y: [0, -8, 0],
+            y: [0, -6, 0],
           }}
           transition={{
             duration: 4,
@@ -136,58 +135,58 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
           className="relative z-10 flex flex-col items-center"
         >
           {/* Head & Hair */}
-          <div className="relative w-28 h-28 rounded-full bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 p-1 shadow-[0_0_30px_rgba(255,215,0,0.8)] border-2 border-amber-300/60">
+          <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 p-1 shadow-[0_0_25px_rgba(255,215,0,0.8)] border-2 border-amber-300/60">
             {/* Flowing Golden Hair Wings */}
             <motion.div
               animate={{ rotate: [-2, 2, -2] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-3 -left-4 w-36 h-28 bg-gradient-to-b from-amber-300 via-yellow-400 to-amber-500 rounded-full blur-[1px] -z-10"
+              className="absolute -top-2 -left-3 w-28 h-20 bg-gradient-to-b from-amber-300 via-yellow-400 to-amber-500 rounded-full blur-[1px] -z-10"
             />
 
             {/* Face Detail */}
             <div className="w-full h-full rounded-full bg-gradient-to-b from-[#FFF5EB] to-[#FFE3D1] flex flex-col items-center justify-center relative overflow-hidden">
               {/* Soft Pink Blush */}
-              <div className="absolute top-14 left-3 w-5 h-3 rounded-full bg-pink-400/40 blur-[2px]" />
-              <div className="absolute top-14 right-3 w-5 h-3 rounded-full bg-pink-400/40 blur-[2px]" />
+              <div className="absolute top-10 left-2 w-4 h-2.5 rounded-full bg-pink-400/40 blur-[2px]" />
+              <div className="absolute top-10 right-2 w-4 h-2.5 rounded-full bg-pink-400/40 blur-[2px]" />
 
               {/* Eyes (Open or Blinking) */}
-              <div className="flex space-x-6 mt-4">
+              <div className="flex space-x-4 mt-2.5">
                 {isBlinking ? (
                   <>
-                    <div className="w-4 h-1 bg-amber-900 rounded-full" />
-                    <div className="w-4 h-1 bg-amber-900 rounded-full" />
+                    <div className="w-3 h-1 bg-amber-900 rounded-full" />
+                    <div className="w-3 h-1 bg-amber-900 rounded-full" />
                   </>
                 ) : (
                   <>
-                    <div className="relative w-4 h-4 rounded-full bg-amber-950 flex items-center justify-center">
-                      <div className="w-1.5 h-1.5 rounded-full bg-white absolute top-0.5 left-0.5" />
+                    <div className="relative w-3.5 h-3.5 rounded-full bg-amber-950 flex items-center justify-center">
+                      <div className="w-1 h-1 rounded-full bg-white absolute top-0.5 left-0.5" />
                     </div>
-                    <div className="relative w-4 h-4 rounded-full bg-amber-950 flex items-center justify-center">
-                      <div className="w-1.5 h-1.5 rounded-full bg-white absolute top-0.5 left-0.5" />
+                    <div className="relative w-3.5 h-3.5 rounded-full bg-amber-950 flex items-center justify-center">
+                      <div className="w-1 h-1 rounded-full bg-white absolute top-0.5 left-0.5" />
                     </div>
                   </>
                 )}
               </div>
 
               {/* Cute Smile / Expression */}
-              <div className="mt-3">
+              <div className="mt-2">
                 {isSmiling ? (
-                  <div className="w-6 h-3 border-b-4 border-pink-500 rounded-b-full animate-bounce" />
+                  <div className="w-5 h-2.5 border-b-3 border-pink-500 rounded-b-full animate-bounce" />
                 ) : (
-                  <div className="w-5 h-2 border-b-2 border-amber-900 rounded-b-full" />
+                  <div className="w-4 h-1.5 border-b-2 border-amber-900 rounded-b-full" />
                 )}
               </div>
             </div>
           </div>
 
           {/* Celestial Gown Dress & Arms */}
-          <div className="relative -mt-2 flex flex-col items-center">
+          <div className="relative -mt-1.5 flex flex-col items-center">
             {/* Raised Hand Wave Animation when Reacting */}
             {isWaving && (
               <motion.div
                 animate={{ rotate: [0, 20, -10, 20, 0] }}
                 transition={{ duration: 1.2, repeat: 2 }}
-                className="absolute -right-10 top-2 w-8 h-12 origin-top-left bg-gradient-to-b from-amber-100 to-amber-200 rounded-full border border-amber-300 shadow-sm"
+                className="absolute -right-8 top-1 w-6 h-9 origin-top-left bg-gradient-to-b from-amber-100 to-amber-200 rounded-full border border-amber-300 shadow-sm"
               />
             )}
 
@@ -195,39 +194,39 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
             <motion.div
               animate={{ scaleX: [1, 1.05, 1] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="w-36 h-48 bg-gradient-to-b from-white via-amber-100 to-amber-300 rounded-t-3xl rounded-b-[60px] shadow-[0_15px_40px_rgba(255,215,0,0.6)] border-t-2 border-amber-200 flex flex-col items-center justify-end pb-4"
+              className="w-24 h-28 sm:w-28 sm:h-32 bg-gradient-to-b from-white via-amber-100 to-amber-300 rounded-t-2xl rounded-b-[40px] shadow-[0_10px_30px_rgba(255,215,0,0.6)] border-t border-amber-200 flex flex-col items-center justify-end pb-3"
             >
-              <div className="w-28 h-2 rounded-full bg-amber-400/40 blur-[1px]" />
-              <div className="w-20 h-2 rounded-full bg-amber-400/30 blur-[1px] mt-2" />
+              <div className="w-18 h-1.5 rounded-full bg-amber-400/40 blur-[1px]" />
+              <div className="w-14 h-1.5 rounded-full bg-amber-400/30 blur-[1px] mt-1" />
             </motion.div>
 
             {/* Featured Active Rose Held / Applied on Angel */}
             {activeRose && (
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: [0.8, 1.15, 1], opacity: 1, y: [0, -6, 0] }}
+                animate={{ scale: [0.8, 1.1, 1], opacity: 1, y: [0, -4, 0] }}
                 transition={{
                   scale: { type: "spring", stiffness: 400, damping: 20 },
                   y: { duration: 2, repeat: Infinity, ease: "easeInOut" },
                 }}
-                className="absolute top-20 z-30 flex flex-col items-center pointer-events-auto cursor-pointer"
+                className="absolute top-12 z-30 flex flex-col items-center pointer-events-auto cursor-pointer"
                 onClick={() => removeAppliedRose(activeRose.id)}
                 title={`${activeRose.name}: ${activeRose.description} (Click to remove)`}
               >
                 {/* Glowing Aura Ring behind Rose */}
                 <div
-                  className="absolute w-16 h-16 rounded-full blur-md opacity-80 animate-pulse"
+                  className="absolute w-12 h-12 rounded-full blur-md opacity-80 animate-pulse"
                   style={{ backgroundColor: activeRose.color }}
                 />
 
                 {/* Rose Flower Badge */}
                 <div
-                  className="relative px-3 py-1.5 rounded-full bg-slate-950/90 border-2 flex items-center space-x-1.5 shadow-[0_0_25px_rgba(255,215,0,0.9)] backdrop-blur-md"
+                  className="relative px-2.5 py-1 rounded-full bg-slate-950/90 border-2 flex items-center space-x-1 shadow-[0_0_20px_rgba(255,215,0,0.9)] backdrop-blur-md"
                   style={{ borderColor: activeRose.color }}
                 >
-                  <span className="text-2xl animate-bounce">{activeRose.iconSymbol}</span>
+                  <span className="text-xl animate-bounce">{activeRose.iconSymbol}</span>
                   <span
-                    className="text-xs font-extrabold tracking-wide"
+                    className="text-[11px] font-extrabold tracking-wide"
                     style={{ color: activeRose.color }}
                   >
                     {activeRose.name}
@@ -240,7 +239,7 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
       </div>
 
       {/* Floating Ground Shadow & Reflection */}
-      <div className="w-48 h-6 rounded-full bg-amber-400/20 blur-md -mt-4 shadow-[0_0_20px_rgba(255,215,0,0.5)]" />
+      <div className="w-36 h-4 rounded-full bg-amber-400/20 blur-md -mt-3 shadow-[0_0_15px_rgba(255,215,0,0.5)]" />
     </div>
   );
 };

@@ -23,6 +23,10 @@ class SoundEngine {
     return enabled ? Math.max(0, Math.min(1, volume)) : 0;
   }
 
+  public isBgmActive(): boolean {
+    return this.isBgmPlaying;
+  }
+
   // Play Romantic Fantasy Heavenly Melody Loop
   public startBgm(volume: number, enabled: boolean) {
     if (!enabled || this.isBgmPlaying) return;
@@ -31,14 +35,14 @@ class SoundEngine {
 
     try {
       this.isBgmPlaying = true;
-      const masterVol = this.getVolume(volume, enabled) * 0.22;
+      const masterVol = this.getVolume(volume, enabled) * 0.18; // Soft, ambient, relaxing level
 
       this.bgmGain = this.ctx.createGain();
       this.bgmGain.gain.setValueAtTime(masterVol, this.ctx.currentTime);
       this.bgmGain.connect(this.ctx.destination);
 
-      // Warm Romantic Celestial Bass & Pad Chords (F#m9 / A maj7)
-      const padFreqs = [185.0, 277.18, 369.99, 440.0, 554.37];
+      // Soft Warm Celestial Chord Pad (F#m9 / A maj7 / C#m7)
+      const padFreqs = [185.0, 277.18, 369.99, 440.0, 554.37, 659.25];
       this.bgmOscillators = padFreqs.map((freq) => {
         if (!this.ctx) return null as unknown as OscillatorNode;
         const osc = this.ctx.createOscillator();
@@ -49,8 +53,8 @@ class SoundEngine {
         osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
         // Lush slow vibrato shimmer
-        lfo.frequency.setValueAtTime(0.2 + Math.random() * 0.15, this.ctx.currentTime);
-        lfoGain.gain.setValueAtTime(2.0, this.ctx.currentTime);
+        lfo.frequency.setValueAtTime(0.15 + Math.random() * 0.1, this.ctx.currentTime);
+        lfoGain.gain.setValueAtTime(1.5, this.ctx.currentTime);
 
         lfo.connect(osc.frequency);
         osc.connect(this.bgmGain!);
@@ -60,7 +64,7 @@ class SoundEngine {
         return osc;
       }).filter(Boolean);
 
-      // Dynamic Harp/Chime Romantic Arpeggio Melody Loop
+      // Gentle Celestial Harp / Wind Chime Soft Melody Loop
       const melodyNotes = [
         523.25, 659.25, 783.99, 1046.5, 987.77, 783.99, 659.25, 523.25,
         587.33, 698.46, 880.0, 1174.66, 1046.5, 880.0, 698.46, 587.33,
@@ -79,18 +83,18 @@ class SoundEngine {
           noteOsc.frequency.setValueAtTime(melodyNotes[noteIdx], now);
 
           noteGain.gain.setValueAtTime(0, now);
-          noteGain.gain.linearRampToValueAtTime(masterVol * 0.35, now + 0.04);
-          noteGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
+          noteGain.gain.linearRampToValueAtTime(masterVol * 0.3, now + 0.05);
+          noteGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.85);
 
           noteOsc.connect(noteGain);
           noteGain.connect(this.ctx.destination);
 
           noteOsc.start(now);
-          noteOsc.stop(now + 0.8);
+          noteOsc.stop(now + 0.9);
 
           noteIdx = (noteIdx + 1) % melodyNotes.length;
           if (this.isBgmPlaying) {
-            setTimeout(playNextMelodyNote, 420);
+            setTimeout(playNextMelodyNote, 480);
           }
         } catch {
           // Ignored
@@ -104,7 +108,7 @@ class SoundEngine {
   }
 
   public updateBgmVolume(volume: number, enabled: boolean) {
-    const vol = this.getVolume(volume, enabled) * 0.25;
+    const vol = this.getVolume(volume, enabled) * 0.2;
     if (this.bgmGain && this.ctx) {
       this.bgmGain.gain.setTargetAtTime(vol, this.ctx.currentTime, 0.1);
     }
@@ -124,6 +128,63 @@ class SoundEngine {
     });
     this.bgmOscillators = [];
     this.isBgmPlaying = false;
+  }
+
+  // Golden Phoenix Rise Warm Flame Swoosh Sound
+  public playPhoenixRise(volume = 0.8, enabled = true) {
+    if (!enabled) return;
+    this.initCtx();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(150, now);
+    osc.frequency.exponentialRampToValueAtTime(600, now + 1.2);
+
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(this.getVolume(volume, enabled) * 0.35, now + 0.4);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 1.5);
+
+    this.playMagicSparkle(volume * 0.8, enabled);
+  }
+
+  // Diamond Butterfly Swarm Flutter Sound
+  public playButterflySwarm(volume = 0.8, enabled = true) {
+    if (!enabled) return;
+    this.initCtx();
+    if (!this.ctx) return;
+
+    const notes = [659.25, 783.99, 987.77, 1174.66, 1318.51, 1567.98, 1760.0];
+    const now = this.ctx.currentTime;
+    const vol = this.getVolume(volume, enabled) * 0.15;
+
+    notes.forEach((freq, idx) => {
+      if (!this.ctx) return;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+      gain.gain.setValueAtTime(0, now + idx * 0.08);
+      gain.gain.linearRampToValueAtTime(vol, now + idx * 0.08 + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.4);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now + idx * 0.08);
+      osc.stop(now + idx * 0.08 + 0.4);
+    });
   }
 
   // Heavenly Bell Chime
