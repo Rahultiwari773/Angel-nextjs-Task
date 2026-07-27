@@ -8,6 +8,7 @@ import { StarField } from "../components/Stars/StarField";
 import { GoldenParticles } from "../components/Particles/GoldenParticles";
 import { FireworksCanvas } from "../components/Crackers/FireworksCanvas";
 import { HeartParticles } from "../components/Particles/HeartParticles";
+import { FeatherParticles } from "../components/Particles/FeatherParticles";
 import { EntrySequenceManager } from "../components/AngelEntry/EntrySequenceManager";
 import { CallAngelButton } from "../components/AngelController/CallAngelButton";
 import { RoseBar } from "../components/Rose/RoseBar";
@@ -29,14 +30,15 @@ export default function Home() {
       <GoldenParticles />
       <FireworksCanvas />
       <HeartParticles />
+      <FeatherParticles />
 
-      {/* Central Interactive Content Area (Scrollable whenever window height is small) */}
-      <div className="relative z-20 flex-1 w-full max-w-5xl mx-auto flex flex-col items-center justify-center pt-16 sm:pt-20 pb-44 sm:pb-48 px-2 my-auto">
+      {/* Central Interactive Content Area (Perfect UI Alignment - Centered Angel & Button) */}
+      <div className="relative z-20 flex-1 w-full max-w-4xl mx-auto flex flex-col items-center justify-center pt-16 sm:pt-20 pb-36 sm:pb-40 px-3 space-y-3 sm:space-y-5 my-auto">
         {/* Entry Sequence & Angel Visual */}
         <EntrySequenceManager />
 
-        {/* Center Call Angel Button & Active Style Badge */}
-        <div className="mt-3 sm:mt-4 w-full flex justify-center shrink-0">
+        {/* Center Call Angel Button & Active Style Badge (Positioned Right Near the Angel) */}
+        <div className="w-full flex justify-center shrink-0">
           <CallAngelButton />
         </div>
       </div>

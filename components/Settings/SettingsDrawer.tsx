@@ -78,8 +78,41 @@ export const SettingsDrawer: React.FC = () => {
                 </button>
               </div>
 
-              {/* Toggles Group */}
-              <div className="mt-6 space-y-5">
+            {/* Toggles Group */}
+            <div className="mt-6 space-y-5">
+              {/* Angel Visual Render Mode Toggle */}
+              <div className="p-3 rounded-2xl bg-gradient-to-r from-amber-950/80 via-slate-900 to-amber-950/80 border border-amber-300/50 shadow-[0_0_20px_rgba(255,215,0,0.3)] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-extrabold text-amber-300 flex items-center space-x-1.5">
+                    <span>👑 Angel Visual Model</span>
+                  </span>
+                  <span className="text-[11px] font-bold text-amber-200 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-300/40">
+                    {settings.avatarMode === "real" ? "Photorealistic" : "Vector"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <button
+                    onClick={() => useAngelStore.getState().setAvatarMode("real")}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1 ${
+                      settings.avatarMode === "real"
+                        ? "bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 shadow-[0_0_15px_rgba(255,215,0,0.8)] border border-amber-200"
+                        : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                    }`}
+                  >
+                    <span>👑 Pure Real Angel</span>
+                  </button>
+                  <button
+                    onClick={() => useAngelStore.getState().setAvatarMode("vector")}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1 ${
+                      settings.avatarMode === "vector"
+                        ? "bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 shadow-[0_0_15px_rgba(255,215,0,0.8)] border border-amber-200"
+                        : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                    }`}
+                  >
+                    <span>✨ Vector Angel</span>
+                  </button>
+                </div>
+              </div>
                 {/* BGM Toggle */}
                 <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-900/60 border border-slate-800">
                   <div className="flex items-center space-x-3">

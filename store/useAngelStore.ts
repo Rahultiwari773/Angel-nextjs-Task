@@ -39,6 +39,7 @@ interface AngelStoreState {
   setVolume: (val: number) => void;
   setAnimationSpeed: (speed: number) => void;
   setThemeMode: (mode: "dark" | "light") => void;
+  setAvatarMode: (mode: "real" | "vector") => void;
   toggleSettingsDrawer: () => void;
   triggerFireworksBurst: () => void;
   addLog: (action: string, details: string, type?: SystemLog["type"]) => void;
@@ -58,6 +59,7 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
     crackersEnabled: true,
     starsEnabled: true,
     particlesEnabled: true,
+    avatarMode: "real",
     volume: 0.8,
     animationSpeed: 1.0,
     themeMode: "dark",
@@ -94,10 +96,10 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
     } else if (selectedEntryType !== "random") {
       nextEntry = selectedEntryType;
     } else {
-      // Auto-cycle through the 6 entry ways on each button press!
       nextEntry = ((activeEntryType % 6) + 1) as EntryType;
     }
 
+    // Instantly update state for 0ms UI lag
     set({
       stage: "calling",
       activeEntryType: nextEntry,
@@ -106,16 +108,14 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
 
     get().addLog("Call Angel Triggered", `Initiating entry sequence Style ${nextEntry}`, "entry");
 
-    // Call backend API in background
-    try {
-      await fetch("/api/angel/call", {
+    // Non-blocking background API notification (fire-and-forget for smooth UI)
+    setTimeout(() => {
+      fetch("/api/angel/call", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ entryType: nextEntry }),
-      });
-    } catch {
-      // Graceful fallback
-    }
+      }).catch(() => {});
+    }, 0);
 
     return nextEntry;
   },
@@ -147,8 +147,8 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
     const item = isObject ? roseInput : undefined;
 
     // Control point for Bezier curve trajectory
-    const controlX = (startX + angelPos.x) / 2 + (Math.random() * 200 - 100);
-    const controlY = Math.min(startX, angelPos.y) - 150 - Math.random() * 100;
+    const controlX = (startX + angelPos.x) / 2 + (Math.random() * 160 - 80);
+    const controlY = Math.min(startX, angelPos.y) - 120 - Math.random() * 80;
 
     const newRose: ActiveFlyingRose = {
       id,
@@ -160,7 +160,7 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
       controlX,
       controlY,
       progress: 0,
-      speed: 0.015 * get().settings.animationSpeed,
+      speed: 0.018 * get().settings.animationSpeed,
       item,
     };
 
@@ -168,19 +168,20 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
       flyingRoses: [...state.flyingRoses, newRose],
     }));
 
-    // If item was passed, also apply it directly to Angel so it appears on Angel immediately/upon selection
     if (item) {
       get().applyRoseToAngel(item);
     }
 
     get().addLog("Rose Launched", `Color: ${color}`, "rose");
 
-    // Async server notification
-    fetch("/api/rose/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ color, startX, startY }),
-    }).catch(() => {});
+    // Non-blocking background API fetch
+    setTimeout(() => {
+      fetch("/api/rose/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ color, startX, startY }),
+      }).catch(() => {});
+    }, 0);
   },
 
   updateRoseProgress: (id, delta) => {
@@ -229,6 +230,13 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
     set((state) => ({
       settings: { ...state.settings, themeMode },
     }));
+  },
+
+  setAvatarMode: (avatarMode) => {
+    set((state) => ({
+      settings: { ...state.settings, avatarMode },
+    }));
+    get().addLog("Avatar Mode Changed", `Switched to ${avatarMode} Angel visual mode`, "setting");
   },
 
   toggleSettingsDrawer: () => set((state) => ({ isSettingsOpen: !state.isSettingsOpen })),

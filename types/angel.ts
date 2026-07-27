@@ -47,6 +47,7 @@ export interface AppSettings {
   crackersEnabled: boolean;
   starsEnabled: boolean;
   particlesEnabled: boolean;
+  avatarMode: "real" | "vector"; // Pure photorealistic real angel vs stylized vector angel
   volume: number; // 0 to 1
   animationSpeed: number; // 0.5 to 2.0
   themeMode: "dark" | "light";

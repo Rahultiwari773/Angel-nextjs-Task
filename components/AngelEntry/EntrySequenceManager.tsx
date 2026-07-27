@@ -12,7 +12,7 @@ export const EntrySequenceManager: React.FC = () => {
   const [sequenceStep, setSequenceStep] = useState(0);
   const angelRef = useRef<HTMLDivElement | null>(null);
 
-  // Sync Angel position for precise Rose targeting
+  // Sync Angel position for precise Rose targeting (Event-driven without layout thrashing)
   useEffect(() => {
     const updatePos = () => {
       if (angelRef.current) {
@@ -26,12 +26,10 @@ export const EntrySequenceManager: React.FC = () => {
     updatePos();
     window.addEventListener("resize", updatePos);
     window.addEventListener("scroll", updatePos);
-    const interval = setInterval(updatePos, 500);
 
     return () => {
       window.removeEventListener("resize", updatePos);
       window.removeEventListener("scroll", updatePos);
-      clearInterval(interval);
     };
   }, [setAngelPos, stage]);
 
@@ -43,6 +41,7 @@ export const EntrySequenceManager: React.FC = () => {
       switch (activeEntryType) {
         case 1:
           soundEngine.playBell(settings.volume, settings.sfxEnabled);
+          soundEngine.playWingFlap(settings.volume, settings.sfxEnabled);
           break;
         case 2:
           soundEngine.playPortalSound(settings.volume, settings.sfxEnabled);
@@ -64,11 +63,11 @@ export const EntrySequenceManager: React.FC = () => {
           soundEngine.playBell(settings.volume, settings.sfxEnabled);
       }
 
-      // Step transitions
+      // Step transitions for divine descent
       const t1 = setTimeout(() => {
         setSequenceStep(2);
         soundEngine.playWingFlap(settings.volume, settings.sfxEnabled);
-      }, 1200);
+      }, 1000);
 
       const t2 = setTimeout(() => {
         setSequenceStep(3);
@@ -132,29 +131,30 @@ export const EntrySequenceManager: React.FC = () => {
 
       {/* Calling Entry Type Animations - 6 Distinct Visual Sequences */}
       {stage === "calling" && (
-        <div className="relative flex items-center justify-center min-h-[220px] sm:min-h-[260px]">
-          {/* Entry Type 1: Heavenly Light Descent */}
+        <div className="relative flex items-center justify-center min-h-[200px] xs:min-h-[240px] sm:min-h-[320px]">
+          {/* Entry Type 1: Heavenly Light Descent (Top to Down Angle Descent) */}
           {activeEntryType === 1 && (
             <div className="relative flex flex-col items-center">
-              {/* Heavenly Light Beam Stream */}
+              {/* Divine Light Beam Streaming Down from Open Heaven */}
               <motion.div
                 initial={{ opacity: 0, scaleY: 0 }}
-                animate={{ opacity: [0, 0.8, 0.4], scaleY: [0, 1, 1] }}
-                transition={{ duration: 1.5 }}
-                className="absolute -top-[500px] w-64 h-[700px] bg-gradient-to-b from-amber-200/60 via-yellow-400/30 to-transparent blur-md rounded-full pointer-events-none -z-10"
+                animate={{ opacity: [0, 0.95, 0.6], scaleY: [0, 1, 1] }}
+                transition={{ duration: 1.2 }}
+                className="absolute -top-[500px] sm:-top-[600px] w-64 sm:w-80 h-[700px] sm:h-[850px] bg-gradient-to-b from-amber-200/70 via-yellow-300/40 to-transparent blur-xl rounded-full pointer-events-none -z-10"
               />
 
+              {/* Angel Descending Top-to-Bottom (Up to Down Angle Coming) */}
               <motion.div
-                initial={{ y: -650, opacity: 0, scale: 0.4, rotate: -5 }}
+                initial={{ y: -550, opacity: 0, scale: 0.35, rotateX: 20 }}
                 animate={{
-                  y: sequenceStep >= 2 ? 0 : -250,
+                  y: sequenceStep >= 2 ? 0 : -220,
                   opacity: sequenceStep >= 1 ? 1 : 0,
-                  scale: sequenceStep >= 2 ? 1 : 0.65,
-                  rotate: sequenceStep >= 2 ? 0 : 5,
+                  scale: sequenceStep >= 2 ? 1 : 0.6,
+                  rotateX: sequenceStep >= 2 ? 0 : 10,
                 }}
                 transition={{
-                  duration: 2.4 / settings.animationSpeed,
-                  ease: [0.16, 1, 0.3, 1],
+                  duration: 2.5 / settings.animationSpeed,
+                  ease: [0.16, 1, 0.3, 1], // Smooth heavenly easing
                 }}
               >
                 <AngelAvatar isSmiling={false} isWaving={false} />
@@ -164,9 +164,9 @@ export const EntrySequenceManager: React.FC = () => {
               {sequenceStep >= 2 && (
                 <motion.div
                   initial={{ scale: 0, opacity: 1 }}
-                  animate={{ scale: 2.5, opacity: 0 }}
-                  transition={{ duration: 1.2 }}
-                  className="absolute bottom-0 w-72 h-20 rounded-[100%] bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 blur-lg"
+                  animate={{ scale: 2.8, opacity: 0 }}
+                  transition={{ duration: 1.3 }}
+                  className="absolute bottom-0 w-80 h-24 rounded-[100%] bg-gradient-to-r from-amber-300 via-yellow-100 to-amber-400 blur-xl"
                 />
               )}
             </div>
@@ -217,10 +217,10 @@ export const EntrySequenceManager: React.FC = () => {
               <motion.div
                 initial={{ x: -500, y: -250, rotate: -35, opacity: 0, scale: 0.5 }}
                 animate={{
-                  x: sequenceStep >= 2 ? 0 : [ -400, 250, -150, 0 ],
-                  y: sequenceStep >= 2 ? 0 : [ -250, -150, -200, 0 ],
-                  rotate: sequenceStep >= 2 ? 0 : [ -35, 30, -15, 0 ],
-                  scale: sequenceStep >= 2 ? 1 : [ 0.5, 1.2, 0.8, 1 ],
+                  x: sequenceStep >= 2 ? 0 : [-400, 250, -150, 0],
+                  y: sequenceStep >= 2 ? 0 : [-250, -150, -200, 0],
+                  rotate: sequenceStep >= 2 ? 0 : [-35, 30, -15, 0],
+                  scale: sequenceStep >= 2 ? 1 : [0.5, 1.2, 0.8, 1],
                   opacity: 1,
                 }}
                 transition={{ duration: 2.6 / settings.animationSpeed, ease: "easeInOut" }}
@@ -356,4 +356,3 @@ export const EntrySequenceManager: React.FC = () => {
     </div>
   );
 };
-
