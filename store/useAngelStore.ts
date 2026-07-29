@@ -108,13 +108,18 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
 
     get().addLog("Call Angel Triggered", `Initiating entry sequence Style ${nextEntry}`, "entry");
 
-    // Non-blocking background API notification (fire-and-forget for smooth UI)
+    // Non-blocking background API notification with 3s timeout
     setTimeout(() => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
       fetch("/api/angel/call", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ entryType: nextEntry }),
-      }).catch(() => {});
+        signal: controller.signal,
+      })
+        .catch(() => {})
+        .finally(() => clearTimeout(timeoutId));
     }, 0);
 
     return nextEntry;
@@ -146,21 +151,28 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
     const color = isObject ? roseInput.color : roseInput;
     const item = isObject ? roseInput : undefined;
 
-    // Control point for Bezier curve trajectory
-    const controlX = (startX + angelPos.x) / 2 + (Math.random() * 160 - 80);
-    const controlY = Math.min(startX, angelPos.y) - 120 - Math.random() * 80;
+    const screenWidth = typeof window !== "undefined" ? window.innerWidth : 800;
+    const screenHeight = typeof window !== "undefined" ? window.innerHeight : 600;
+
+    // Guaranteed exact middle-center of screen trajectory ("only middle of center through way")
+    const midX = screenWidth / 2;
+    const actualStartY = screenHeight - 80;
+    const targetX = midX;
+    const targetY = angelPos.y || screenHeight * 0.38;
+    const controlX = midX;
+    const controlY = (actualStartY + targetY) / 2;
 
     const newRose: ActiveFlyingRose = {
       id,
       color,
-      startX,
-      startY,
-      targetX: angelPos.x,
-      targetY: angelPos.y,
+      startX: midX,
+      startY: actualStartY,
+      targetX,
+      targetY,
       controlX,
       controlY,
       progress: 0,
-      speed: 0.018 * get().settings.animationSpeed,
+      speed: 0.0045 * get().settings.animationSpeed, // Slow motion ~3.5s graceful vertical ascent
       item,
     };
 
@@ -168,19 +180,20 @@ export const useAngelStore = create<AngelStoreState>((set, get) => ({
       flyingRoses: [...state.flyingRoses, newRose],
     }));
 
-    if (item) {
-      get().applyRoseToAngel(item);
-    }
-
     get().addLog("Rose Launched", `Color: ${color}`, "rose");
 
-    // Non-blocking background API fetch
+    // Non-blocking background API fetch with 3s timeout
     setTimeout(() => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
       fetch("/api/rose/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ color, startX, startY }),
-      }).catch(() => {});
+        signal: controller.signal,
+      })
+        .catch(() => {})
+        .finally(() => clearTimeout(timeoutId));
     }, 0);
   },
 

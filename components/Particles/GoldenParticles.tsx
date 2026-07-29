@@ -64,11 +64,8 @@ export const GoldenParticles: React.FC = () => {
           s.x = Math.random() * width;
         }
 
-        ctx.save();
         ctx.globalAlpha = Math.max(0, Math.min(1, s.alpha));
         ctx.fillStyle = "#FFD700";
-        ctx.shadowColor = "#FBBF24";
-        ctx.shadowBlur = 10;
 
         // Draw 4-point star shape
         ctx.beginPath();
@@ -83,8 +80,6 @@ export const GoldenParticles: React.FC = () => {
         ctx.lineTo(s.x - r * 0.5, s.y - r * 0.5);
         ctx.closePath();
         ctx.fill();
-
-        ctx.restore();
       });
 
       animationFrameId = requestAnimationFrame(render);

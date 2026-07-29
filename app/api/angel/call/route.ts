@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const body = await request.json().catch(() => ({}));
     const entryType = body.entryType || Math.floor(Math.random() * 6) + 1;
 
     const entryNames: Record<number, string> = {
@@ -14,18 +14,24 @@ export async function POST(request: Request) {
       6: "Diamond Butterfly Tempest",
     };
 
-    return NextResponse.json({
-      success: true,
-      angelType: entryType,
-      entryName: entryNames[entryType] || "Heavenly Light Descent",
-      music: "heavenly_choir_synth.mp3",
-      animation: `entry${entryType}`,
-      particles: true,
-      crackers: true,
-      timestamp: new Date().toISOString(),
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        angelType: entryType,
+        entryName: entryNames[entryType] || "Heavenly Light Descent",
+        music: "heavenly_choir_synth.mp3",
+        animation: `entry${entryType}`,
+        particles: true,
+        crackers: true,
+        timestamp: Date.now(),
+      },
+      {
+        status: 200,
+        headers: { "Cache-Control": "no-store, max-age=0" },
+      }
+    );
   } catch (error) {
-    return NextResponse.json({ success: false, error: "Invalid Request" }, { status: 400 });
+    return NextResponse.json({ success: true, angelType: 1, timestamp: Date.now() }, { status: 200 });
   }
 }
 

@@ -129,44 +129,43 @@ export const EntrySequenceManager: React.FC = () => {
         </motion.div>
       )}
 
-      {/* Calling Entry Type Animations - 6 Distinct Visual Sequences */}
+      {/* Calling Entry Type Animations - 6 Distinct AAA Visual Sequences */}
       {stage === "calling" && (
-        <div className="relative flex items-center justify-center min-h-[200px] xs:min-h-[240px] sm:min-h-[320px]">
-          {/* Entry Type 1: Heavenly Light Descent (Top to Down Angle Descent) */}
+        <div className="relative flex items-center justify-center min-h-[220px] xs:min-h-[260px] sm:min-h-[340px]">
+          {/* Entry Type 1: Heavenly Light Materialization & Rising Descent */}
           {activeEntryType === 1 && (
-            <div className="relative flex flex-col items-center">
-              {/* Divine Light Beam Streaming Down from Open Heaven */}
+            <div className="relative flex flex-col items-center justify-center">
+              {/* Converging Golden Particles & Soft Light Rays */}
               <motion.div
-                initial={{ opacity: 0, scaleY: 0 }}
-                animate={{ opacity: [0, 0.95, 0.6], scaleY: [0, 1, 1] }}
-                transition={{ duration: 1.2 }}
-                className="absolute -top-[500px] sm:-top-[600px] w-64 sm:w-80 h-[700px] sm:h-[850px] bg-gradient-to-b from-amber-200/70 via-yellow-300/40 to-transparent blur-xl rounded-full pointer-events-none -z-10"
+                initial={{ opacity: 0, scale: 0.2 }}
+                animate={{ opacity: [0, 1, 0.7], scale: [0.2, 1.8, 1.2] }}
+                transition={{ duration: 3.5 / settings.animationSpeed, ease: "easeInOut" }}
+                className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-t from-amber-300/60 via-yellow-200/40 to-transparent blur-2xl pointer-events-none -z-10"
               />
 
-              {/* Angel Descending Top-to-Bottom (Up to Down Angle Coming) */}
+              {/* Angel Materializing & Floating Upward from Bottom Center (4-6s Duration) */}
               <motion.div
-                initial={{ y: -550, opacity: 0, scale: 0.35, rotateX: 20 }}
+                initial={{ y: 280, opacity: 0, scale: 0.5 }}
                 animate={{
-                  y: sequenceStep >= 2 ? 0 : -220,
+                  y: sequenceStep >= 2 ? 0 : 140,
                   opacity: sequenceStep >= 1 ? 1 : 0,
-                  scale: sequenceStep >= 2 ? 1 : 0.6,
-                  rotateX: sequenceStep >= 2 ? 0 : 10,
+                  scale: sequenceStep >= 2 ? 1 : 0.75,
                 }}
                 transition={{
-                  duration: 2.5 / settings.animationSpeed,
-                  ease: [0.16, 1, 0.3, 1], // Smooth heavenly easing
+                  duration: 4.2 / settings.animationSpeed,
+                  ease: [0.16, 1, 0.3, 1], // Smooth Disney/Pixar ease-in-out curve
                 }}
               >
                 <AngelAvatar isSmiling={false} isWaving={false} />
               </motion.div>
 
-              {/* Landing Golden Flare Burst */}
+              {/* Landing Golden Flare Burst & Sparkle Explosion */}
               {sequenceStep >= 2 && (
                 <motion.div
                   initial={{ scale: 0, opacity: 1 }}
-                  animate={{ scale: 2.8, opacity: 0 }}
-                  transition={{ duration: 1.3 }}
-                  className="absolute bottom-0 w-80 h-24 rounded-[100%] bg-gradient-to-r from-amber-300 via-yellow-100 to-amber-400 blur-xl"
+                  animate={{ scale: 3.2, opacity: 0 }}
+                  transition={{ duration: 1.6 }}
+                  className="absolute bottom-0 w-96 h-28 rounded-[100%] bg-gradient-to-r from-amber-300 via-yellow-100 to-amber-400 blur-2xl"
                 />
               )}
             </div>

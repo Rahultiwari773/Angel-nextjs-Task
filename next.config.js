@@ -15,7 +15,10 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config) => {
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.cache = false; // Disable disk packfile caching to prevent file lock collisions
+    }
     config.externals.push({
       'utf-8-validate': 'commonjs utf-8-validate',
       'bufferutil': 'commonjs bufferutil',

@@ -57,19 +57,15 @@ export const StarField: React.FC = () => {
         }
 
         // Slight drift downwards for depth
-        star.y += (0.05 * star.z) * settings.animationSpeed;
+        star.y += 0.05 * star.z * settings.animationSpeed;
         if (star.y > height) star.y = 0;
 
-        ctx.save();
         ctx.globalAlpha = Math.max(0.1, Math.min(1, star.alpha));
         ctx.fillStyle = star.color;
-        ctx.shadowColor = star.color;
-        ctx.shadowBlur = star.radius * 4;
 
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius * star.z, 0, Math.PI * 2);
         ctx.fill();
-        ctx.restore();
       });
 
       animationFrameId = requestAnimationFrame(render);

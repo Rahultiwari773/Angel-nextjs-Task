@@ -55,24 +55,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              tailwind.config = {
-                darkMode: 'class',
-                theme: {
-                  extend: {
-                    colors: {
-                      gold: { 300: '#FDE68A', 400: '#FBBF24', 500: '#F59E0B', 600: '#D97706', 700: '#B45309' },
-                      angel: { white: '#FFFDF7', gold: '#FFD700', pink: '#FFB6C1', purple: '#9D4EDD', sky: '#0F172A', deepSky: '#030712' }
-                    }
-                  }
-                }
-              }
-            `,
-          }}
-        />
       </head>
       <body className="antialiased min-h-screen bg-slate-950 text-slate-100 selection:bg-amber-400 selection:text-slate-950">
         {children}

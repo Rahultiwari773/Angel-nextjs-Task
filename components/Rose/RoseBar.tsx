@@ -22,37 +22,33 @@ const ROSES_CATALOG: RoseItem[] = [
 
 export const RoseBar: React.FC = () => {
   const { stage, setStage, launchRose, flyingRoses, appliedRoses, clearAppliedRoses, settings } = useAngelStore();
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const isFlyingActive = flyingRoses.length > 0;
 
   const handleRoseClick = (rose: RoseItem, event: React.MouseEvent<HTMLButtonElement>) => {
+    // Validation: Only allow selecting a second rose AFTER the previous rose flight successfully completes
+    if (isFlyingActive) return;
+
     // If Angel is not summoned yet, bring Angel onto screen
     if (stage === "ready") {
       setStage("present");
     }
 
-    const rect = event.currentTarget.getBoundingClientRect();
-    const startX = rect.left + rect.width / 2;
-    const startY = rect.top + rect.height / 2;
+    // Always launch from exact horizontal middle of screen at bottom (middle se start)
+    const startX = window.innerWidth / 2;
+    const startY = window.innerHeight - 80;
 
     soundEngine.playRoseSwoosh(settings.volume, settings.sfxEnabled);
+    soundEngine.playMagicSparkle(settings.volume, settings.sfxEnabled);
     launchRose(rose, startX, startY);
   };
 
-  const handleLaunchBurst = () => {
-    if (stage === "ready") {
-      setStage("present");
-    }
-
-    soundEngine.playRoseSwoosh(settings.volume, settings.sfxEnabled);
-    ROSES_CATALOG.forEach((rose, idx) => {
-      setTimeout(() => {
-        const startX = (window.innerWidth / 11) * (idx + 1);
-        const startY = window.innerHeight - 80;
-        launchRose(rose, startX, startY);
-      }, idx * 120);
-    });
-  };
-
-  if (stage === "dark_intro") return null;
+  if (!isMounted || stage === "dark_intro") return null;
 
   return (
     <>
@@ -71,53 +67,58 @@ export const RoseBar: React.FC = () => {
         <div className="flex items-center justify-between w-full px-1 sm:px-2">
           <div className="flex items-center space-x-1.5 text-amber-200 text-xs sm:text-sm font-semibold">
             <span>🌹</span>
-            <span className="text-[11px] sm:text-xs">Offer Celestial Roses</span>
-            {appliedRoses.length > 0 && (
+            <span className="text-[11px] sm:text-xs">
+              {isFlyingActive ? "Offering rose to Angel... ✨" : "Offer Celestial Roses"}
+            </span>
+            {appliedRoses.length > 0 && !isFlyingActive && (
               <span className="hidden sm:inline-block ml-1.5 px-2 py-0.5 rounded-full text-[10px] bg-amber-400/20 border border-amber-300/50 text-amber-200 font-bold animate-pulse" style={{ color: appliedRoses[0].color }}>
                 ✨ {appliedRoses[0].name} {appliedRoses[0].iconSymbol}
               </span>
             )}
           </div>
 
-          <div className="flex items-center space-x-1.5">
-            {appliedRoses.length > 0 && (
-              <button
-                onClick={clearAppliedRoses}
-                className="px-2 py-0.5 text-[10px] sm:text-xs rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 font-medium transition-colors"
-                title="Remove applied roses from Angel"
-              >
-                Clear
-              </button>
-            )}
-
+          {appliedRoses.length > 0 && !isFlyingActive && (
             <button
-              onClick={handleLaunchBurst}
-              className="px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 font-bold hover:scale-105 transition-transform shadow-md"
+              onClick={clearAppliedRoses}
+              className="px-2.5 py-0.5 text-[10px] sm:text-xs rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 font-medium transition-colors"
+              title="Remove applied roses from Angel"
             >
-              Launch All 🌹✨
+              Clear
             </button>
-          </div>
+          )}
         </div>
 
         {/* 10 Roses Interactive Carousel / Row */}
         <div className="flex items-center justify-start md:justify-center space-x-1.5 md:space-x-2.5 overflow-x-auto w-full py-0.5 scrollbar-none px-0.5">
           {ROSES_CATALOG.map((rose) => {
             const isApplied = appliedRoses.some((r) => r.id === rose.id);
+            const isFlyingThisRose = flyingRoses.some((r) => r.item?.id === rose.id);
+            const isOtherDisabled = isFlyingActive && !isFlyingThisRose;
+
             return (
               <motion.button
                 key={rose.id}
-                whileHover={{ scale: 1.12, y: -3 }}
-                whileTap={{ scale: 0.9 }}
+                disabled={isFlyingActive}
+                whileHover={isFlyingActive ? {} : { scale: 1.12, y: -3 }}
+                whileTap={isFlyingActive ? {} : { scale: 0.9 }}
                 onClick={(e) => handleRoseClick(rose, e)}
                 className={`relative flex flex-col items-center justify-center p-1 sm:p-1.5 rounded-xl transition-all duration-300 group min-w-[48px] sm:min-w-[52px] ${
-                  isApplied
+                  isFlyingThisRose
+                    ? "scale-105 bg-amber-950/90 border-2 border-amber-400 shadow-[0_0_25px_rgba(255,215,0,0.95)] ring-2 ring-amber-300 animate-pulse"
+                    : isOtherDisabled
+                    ? "opacity-40 cursor-not-allowed pointer-events-none bg-slate-950/50 border-slate-850"
+                    : isApplied
                     ? "bg-amber-950/60 border border-amber-400 shadow-[0_0_15px_rgba(255,215,0,0.5)] ring-1 ring-amber-300"
                     : "bg-slate-900/80 border border-slate-700/60 hover:border-amber-300"
                 }`}
-                title={`${rose.name} - ${rose.description}${isApplied ? " (Currently Applied on Angel)" : ""}`}
+                title={
+                  isOtherDisabled
+                    ? "Please wait for current rose to finish offering..."
+                    : `${rose.name} - ${rose.description}${isApplied ? " (Currently Applied on Angel)" : ""}`
+                }
               >
-                {/* Active Applied Badge */}
-                {isApplied && (
+                {/* Active Flying or Applied Checkmark Badge */}
+                {(isFlyingThisRose || isApplied) && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] flex items-center justify-center shadow-md animate-bounce">
                     ✓
                   </span>
@@ -127,14 +128,14 @@ export const RoseBar: React.FC = () => {
                   className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm sm:text-base shadow-lg transition-transform group-hover:scale-110"
                   style={{
                     backgroundColor: "rgba(15, 23, 42, 0.9)",
-                    boxShadow: `0 0 12px ${isApplied ? rose.glowColor : "transparent"}`,
+                    boxShadow: `0 0 12px ${isFlyingThisRose || isApplied ? rose.glowColor : "transparent"}`,
                   }}
                 >
                   <span>{rose.iconSymbol}</span>
                 </div>
                 <span
                   className={`text-[9px] sm:text-[10px] font-medium mt-0.5 truncate max-w-[52px] ${
-                    isApplied ? "text-amber-200 font-bold" : "text-slate-300"
+                    isFlyingThisRose || isApplied ? "text-amber-200 font-bold" : "text-slate-300"
                   }`}
                 >
                   {rose.name}

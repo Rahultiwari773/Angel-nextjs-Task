@@ -8,9 +8,11 @@ import { soundEngine } from "../../lib/soundEngine";
 export const HeavenLoading: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { setStage, settings } = useAngelStore();
 
   useEffect(() => {
+    setIsMounted(true);
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -30,7 +32,7 @@ export const HeavenLoading: React.FC = () => {
     return () => clearInterval(timer);
   }, [setStage, settings]);
 
-  if (isLoaded) return null;
+  if (!isMounted || isLoaded) return null;
 
   return (
     <motion.div

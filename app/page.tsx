@@ -32,13 +32,15 @@ export default function Home() {
       <HeartParticles />
       <FeatherParticles />
 
-      {/* Central Interactive Content Area (Perfect UI Alignment - Centered Angel & Button) */}
-      <div className="relative z-20 flex-1 w-full max-w-4xl mx-auto flex flex-col items-center justify-center pt-16 sm:pt-20 pb-36 sm:pb-40 px-3 space-y-3 sm:space-y-5 my-auto">
-        {/* Entry Sequence & Angel Visual */}
-        <EntrySequenceManager />
+      {/* Central Interactive Content Area (Full Celestial Angel Body & Control Action Bar) */}
+      <div className="relative z-20 flex-1 w-full max-w-4xl mx-auto flex flex-col items-center justify-between pt-14 xs:pt-16 sm:pt-20 pb-28 xs:pb-32 sm:pb-36 px-3 my-auto min-h-[calc(100dvh-120px)]">
+        {/* Entry Sequence & Full Angel Body Visual */}
+        <div className="flex-1 flex flex-col items-center justify-center w-full my-auto">
+          <EntrySequenceManager />
+        </div>
 
-        {/* Center Call Angel Button & Active Style Badge (Positioned Right Near the Angel) */}
-        <div className="w-full flex justify-center shrink-0">
+        {/* Control Action Bar (Cleanly aligned below Angel without overlapping) */}
+        <div className="w-full flex justify-center shrink-0 pt-1 sm:pt-3">
           <CallAngelButton />
         </div>
       </div>
