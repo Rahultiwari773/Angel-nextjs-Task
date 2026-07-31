@@ -88,7 +88,7 @@ export const AngelAvatar: React.FC<AngelAvatarProps> = ({ isSmiling = false, isW
                 className="relative flex items-center justify-center pointer-events-auto"
               >
                 <img
-                  src="/images/real_angel.png"
+                  src="/images/real_angel.webp"
                   alt="Photorealistic 3D Celestial Guardian Angel"
                   onError={(e) => {
                     e.preventDefault();

@@ -32,7 +32,7 @@ export const HeavenBackground: React.FC = () => {
           className="absolute inset-0 pointer-events-none mix-blend-screen overflow-hidden"
         >
           <img
-            src="/images/heavenly_gates.png"
+            src="/images/heavenly_gates.webp"
             alt="Heavenly Gates"
             className="w-full h-full object-cover object-center filter brightness-110 contrast-110 blur-[0.5px]"
           />
